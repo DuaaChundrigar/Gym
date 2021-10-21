@@ -1,3 +1,21 @@
+<?php
+$conn = new mysqli("localhost", "root", "" , "gym");
+
+// Check connection
+if ($conn->connect_error) {
+  die("Connection failed: " . $conn->connect_error);
+}
+session_start();
+
+if(!isset($_SESSION['email'])){
+    header("Location:Admin_index.php");
+}
+
+$sql = "SELECT * FROM users";
+$result = $conn->query($sql);
+
+
+?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -39,6 +57,13 @@
         <h1 class="text-6xl font-extrabold text-center text-white "> Muscle Fit </h1>
         <h1 class="text-4xl font-bold text-center text-white "> Lift like a worker and look like a boss </h1>
     </div>
+    <div class="flex flex-row-reverse ">
+            <div >
+                <button class="px-8 py-1 mt-4 mr-8 text-black bg-white rounded ">
+                     <a  href="logout.php"> Logout</a>
+                </button>
+            </div>
+        </div>
 </div> 
 
 <div class="m-auto bg-gray-200 p-4 text-center shadow-xl rounded-md w-1/4 " id="member_list"> 
@@ -47,7 +72,7 @@
 
 
 <div class="container flex justify-center mx-auto" >
-    <div class="border-b border-gray-600 shadow" id="fee_list" hidden>
+    <div class=" border-gray-600 shadow" id="fee_list" hidden>
                 <h1 class=" text-4xl font-bold text-center text-white my-6 ">All Member Fees List</h1>
                 <table class="bg-gray-100 rounded-2xl">
                     <thead>
@@ -64,21 +89,40 @@
                         </tr>
                     </thead>
                     <tbody class="bg-gray-200">
-                        <tr class="whitespace-nowrap">
+
+                    <?php
+                        while($user = $result->fetch_assoc()){
+                       ?>
+                            <tr class="whitespace-nowrap">
                             <td class="px-6 py-4 text-sm text-gray-500">
-                                1
+                                <?php echo $user ['id']?>
                             </td>
-                            <td class="px-6 py-4">
-                                <div class="text-sm text-gray-900">
-                                    Ali
-                                </div>
+                            <td class="px-6 py-4 text-sm text-gray-500">
+                                <?php echo $user ['name']?>
                             </td>
-                            <td class="px-6 py-4">
+                            <td class="px-6 py-4 flex justify-center">
+                                <?php
+                                   $fees = $user ['fees']; 
+                                    if($fees == 1){
+                                ?>
                                 <button class="px-4 py-1 text-sm text-white bg-green-600 rounded" disabled>Paid</button>
+
+                                <?php
+
+                                }else{
+                                ?>
+                                
+                                <button class="px-4 py-1 text-sm text-white bg-green-600 rounded" disabled>Non Paid</button>
+
+                                <?php    
+                                }
+                                ?>
                             </td>
                         
                         </tr>
-                       
+                        <?php
+                            }
+                        ?>  
                     
                     </tbody>
                 </table>

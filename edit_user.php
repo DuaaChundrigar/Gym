@@ -4,34 +4,39 @@ $conn = new mysqli("localhost", "root", "" , "gym");
 
 // Check connection
 if ($conn->connect_error) {
-  die("Connection failed: " . $conn->connect_error);
-}
-if(isset($_GET['user_id'])){
-    echo "user to be update is " .$_GET['user_id'];
-
-$name = $_POST['name'];
-$age = $_POST['age'];
-$phone = $_POST['phone'];
-$weight = $_POST['weight'];
-$height = $_POST['height'];
-$email = $_POST['email'];
-$admission_date = $_POST['admission_date'];
-
-$sql = "UPDATE `users` SET  name = '$name' , age= '$age' , phone= '$phone' , 
-        weight = '$weight' , height = '$height' , email='$email' , 
-        admisssion_date='$admission_date' WHERE id=".$_GET['user_id'] ;
-
-if($conn->query($sql) === TRUE){
-
-    header("location: admission.php");
-
-}else{
-    echo "Error Updating record" .$conn->error;
+    die("Connection failed: " . $conn->connect_error);
 }
 
+session_start();
+
+if(!isset($_SESSION['email'])){
+    header("Location:register_login.php");
 }
 
-?>
+$sql = "SELECT * FROM users WHERE id=".$_GET['id'];
+
+$result = $conn->query($sql);
+
+if ($result->num_rows > 0) {
+    // output data of each row
+    while($row = $result->fetch_assoc()) {
+ 
+        $name = $row['name'];
+        $age = $row['age'];
+        $phone = $row['phone'];
+        $weight = $row['weight'];
+        $height = $row['height'];
+        $email = $row['email'];
+        $admission_date = $row['admission_date'];  
+    
+    }
+} else {
+    echo "0 results";
+}
+
+  
+?>  
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -44,10 +49,8 @@ if($conn->query($sql) === TRUE){
 
     <style>
         body {
-  background-image: url("gym1.jpg");
+               background-image: url("gym1.jpg");
   background-size: cover;
-
-
 
 }
 .flex-container{
@@ -73,6 +76,13 @@ if($conn->query($sql) === TRUE){
         <h1 class="text-6xl font-extrabold text-center text-white "> Muscle Fit </h1>
         <h1 class="text-4xl font-bold text-center text-white "> Lift like a worker and look like a boss </h1>
     </div>
+    <div class="flex flex-row-reverse ">
+            <div >
+                <button class="px-8 py-1 mt-4 mr-8 text-black bg-white rounded ">
+                     <a  href="logout.php"> Logout</a>
+                </button>
+            </div>
+        </div>
 </div> 
 
 
@@ -83,42 +93,42 @@ if($conn->query($sql) === TRUE){
       <div class="w-5/6 lg:w-1/2 mx-auto bg-gray-100 rounded shadow">
             <div class="py-4 px-8 text-black font-bold text-xl border-b border-grey-lighter">Update Form</div>
             <div class="py-4 px-8">
-                <form action="admission_form.php" method="POST" >
+                <form action="edit_user_query.php?user_id=<?php echo $_GET['id'] ?>" method="POST" >
                 <div class="flex mb-4">
                     <div class=" w-full ml-1">
                         <label class="block text-grey-darker text-sm font-bold mb-2" for="name">Name</label>
-                        <input class="appearance-none border rounded w-full py-2 px-3 text-grey-darker" id="name" name="name" type="text" value="" placeholder="Your Name">
+                        <input class="appearance-none border rounded w-full py-2 px-3 text-grey-darker" id="name" name="name" type="text" value="<?php echo $name; ?>" >
                         <span class="text-red-700" id="name_error"> </span>
                     </div>
                 </div>
                 <div class="flex mb-4">
                     <div class="w-1/2 mr-1">
                         <label class="block text-grey-darker text-sm font-bold mb-2" for="Age">Age</label>
-                        <input class="appearance-none border rounded w-full py-2 px-3 text-grey-darker" id="age"  name="age"type="number" placeholder="Your Age">
+                        <input class="appearance-none border rounded w-full py-2 px-3 text-grey-darker" id="age"  name="age"type="number" value="<?php echo $age; ?>" >
                     </div>
                     <div class="w-1/2 ml-1">
                         <label class="block text-grey-darker text-sm font-bold mb-2" for="Phone">Phone Number</label>
-                        <input class="appearance-none border rounded w-full py-2 px-3 text-grey-darker" id="phone" name="phone" type="number" placeholder="Your Phone Number">
+                        <input class="appearance-none border rounded w-full py-2 px-3 text-grey-darker" id="phone" name="phone" type="number" value="<?php echo $phone; ?>" >
                     </div>
                 </div>
                 <div class="flex mb-4">
                     <div class="w-1/2 mr-1">
                         <label class="block text-grey-darker text-sm font-bold mb-2" for="Weight">Weight in Kilogram</label>
-                        <input class="appearance-none border rounded w-full py-2 px-3 text-grey-darker" id="weight" name="weight" type="text" placeholder="Your Weight">
+                        <input class="appearance-none border rounded w-full py-2 px-3 text-grey-darker" id="weight" name="weight" type="text" value="<?php echo $weight; ?>">
                     </div>
                     <div class="w-1/2 ml-1">
                         <label class="block text-grey-darker text-sm font-bold mb-2" for="Height">Height in Meters</label>
-                        <input class="appearance-none border rounded w-full py-2 px-3 text-grey-darker" id="height" name="height" type="text" placeholder="Your Height">
+                        <input class="appearance-none border rounded w-full py-2 px-3 text-grey-darker" id="height" name="height" type="text" value="<?php echo $height; ?>">
                     </div>
                 </div>
                 <div class="mb-4">
                     <label class="block text-grey-darker text-sm font-bold mb-2" for="email">Email Address</label>
-                    <input class="appearance-none border rounded w-full py-2 px-3 text-grey-darker" id="email" name="email" type="email" placeholder="Your email address">
+                    <input class="appearance-none border rounded w-full py-2 px-3 text-grey-darker" id="email" name="email" type="email" value="<?php echo $email; ?>">
                     <span class="text-red-700" id="email_error"> </span>
                 </div>
                 <div class="mb-4">
                     <label class="block text-grey-darker text-sm font-bold mb-2" for="Admission_date">Admission Dates</label>
-                    <input class="appearance-none border rounded w-full py-2 px-3 text-grey-darker" id="admission_date" name="admission_date" type="text" placeholder="Your Admission date">
+                    <input class="appearance-none border rounded w-full py-2 px-3 text-grey-darker" id="admission_date" name="admission_date" type="text" value="<?php echo $admission_date; ?>">
                 </div>
                 <div class="flex justify-center mt-8">
                     <button class="bg-black hover:bg-white hover:text-black border-2 text-white font-bold py-2 px-8  rounded" id="addbtn" name="btn" type="submit">

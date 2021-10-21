@@ -6,8 +6,13 @@ if ($conn->connect_error) {
   die("Connection failed: " . $conn->connect_error);
 }
 
+session_start();
 
-$sql = "SELECT * FROM users";
+if(!isset($_SESSION['email'])){
+    header("Location:Admin_index.php");
+}
+
+$sql = "SELECT * FROM users ORDER BY id DESC";
 $result = $conn->query($sql);
 
 
@@ -28,6 +33,7 @@ $result = $conn->query($sql);
         body {
   background-image: url("gym1.jpg");
   background-size: cover;
+  attachment: fixed;
 
 
 
@@ -41,7 +47,7 @@ $result = $conn->query($sql);
 }
     </style>
 </head>
-<body >
+<body>
 
 <div>
 
@@ -55,6 +61,13 @@ $result = $conn->query($sql);
         <h1 class="text-6xl font-extrabold text-center text-white "> Muscle Fit </h1>
         <h1 class="text-4xl font-bold text-center text-white "> Lift like a worker and look like a boss </h1>
     </div>
+    <div class="flex flex-row-reverse ">
+            <div >
+                <button class="px-8 py-1 mt-4 mr-8 text-black bg-white rounded ">
+                     <a  href="logout.php"> Logout</a>
+                </button>
+            </div>
+        </div>
 </div> 
 
 <div class="grid grid-cols-2 px-12">
@@ -77,7 +90,7 @@ $result = $conn->query($sql);
 <!-- List of Users -->
 
 <div class="container flex justify-center mx-auto" >
-    <div class="border-b border-gray-600 shadow" id="user_list" hidden>
+    <div class="border-b border-gray-600 shadow" id="user_list"  >
                 <h1 class=" text-4xl font-bold text-center text-white my-6 ">All Members List</h1>
                 <table class="bg-gray-100 rounded-2xl">
                     <thead>
@@ -142,14 +155,14 @@ $result = $conn->query($sql);
                                 <?php echo $user ['admission_date']?>
                             </td>   
                             <td class="px-6 py-4">
-                                <a href="edit_user.php" <?php echo $user['id'] ?> class="px-4 py-1 text-sm text-white bg-blue-600 rounded edit">Edit</a>
+                                <a href="edit_user.php?id=<?php echo $user['id'] ?> "  class="px-4 py-1 text-sm text-white bg-blue-600 rounded edit">Edit</a>
                                 <a href="#" data-userid="<?php echo $user['id'] ?>" class="px-4 py-1 text-sm text-white bg-red-600 rounded delete" >Delete</a>
                             </td>
                         </tr>
 
-                    <?php
-                        }
-                    ?>    
+                        <?php
+                            }
+                        ?>    
                        
                       
                     
@@ -211,6 +224,10 @@ $result = $conn->query($sql);
                     <label class="block text-grey-darker text-sm font-bold mb-2" for="confirm_password">Enter Confirm Password</label>
                     <input class="appearance-none border rounded w-full py-2 px-3 text-grey-darker" id="confirm_password" name="confirm_password" type="password" placeholder="Enter Confirm Password">
                     <span class="text-red-700" id="confirm_password_error"> </span>
+                </div>
+                <div class="mb-4">
+                    <label class="block text-grey-darker text-sm font-bold mb-2" for="password">Fees</label>
+                    <input class="appearance-none border rounded w-full py-2 px-3 text-grey-darker" id="fees" name="fees" type="fees" placeholder= " Press 0 for non-paid 1 for paid">
                 </div>
                 <div class="flex justify-center mt-8">
                     <button class="bg-black hover:bg-white hover:text-black border-2 text-white font-bold py-2 px-8  rounded" id="addbtn" name="btn" type="submit" disabled>

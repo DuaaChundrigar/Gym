@@ -16,7 +16,8 @@ $admission_date = $_POST['admission_date'];
 $password = $_POST['password'];
 $md_pass = md5($password);
 
-$sql = "INSERT INTO users ( name , age , phone , weight , height  , email , admission_date , password   ) VALUES ('$name' , '$age' , '$phone', '$weight', '$height' , '$email' , '$admission_date' , '$md_pass' )";
+$sql = "INSERT INTO users ( name , age , phone , weight , height  , email , admission_date , password   ) 
+      VALUES ('$name' , '$age' , '$phone', '$weight', '$height' , '$email' , '$admission_date' , '$md_pass' )";
 
 if ($conn -> query($sql) === TRUE) {
 

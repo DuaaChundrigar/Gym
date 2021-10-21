@@ -1,3 +1,16 @@
+<?php
+
+session_start();
+
+if(!isset($_SESSION['email'])){
+    header("Location: Admin_index.php");
+}
+
+
+echo "Welcome " . $_SESSION['email'];
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -31,6 +44,13 @@
         <h1 class="text-6xl font-extrabold text-center text-white "> Muscle Fit </h1>
         <h1 class="text-4xl font-bold text-center text-white "> Lift like a worker and look like a boss </h1>
     </div>
+        <div class="flex flex-row-reverse ">
+            <div >
+                <button class="px-8 py-1 mt-4 mr-8 text-black bg-white rounded ">
+                     <a  href="logout.php"> Logout</a>
+                </button>
+            </div>
+        </div>
 </div> 
     
 <div class="grid grid-cols-3 px-12">

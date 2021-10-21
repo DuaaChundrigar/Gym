@@ -8,7 +8,6 @@ if ($conn->connect_error) {
 }
 
 
-
 if(isset($_GET['user_id'])){
     echo "user to be dlt is " .$_GET['user_id'];
      
