@@ -44,7 +44,6 @@ if(isset($_POST['login'])){
 }
 .flex-container{
         display: flex;
-        justify-content:;
     }
 * {
     box-sizing: border-box;

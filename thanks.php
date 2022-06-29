@@ -16,7 +16,7 @@
             display: flex;
             justify-content:left;
     }
-    }
+    
         * {
              box-sizing: border-box;
     }

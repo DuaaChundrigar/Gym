@@ -54,7 +54,7 @@
                             </div>
                             
                             <div class="flex justify-center">
-                                <span class="error text-white text-center mt-4"> <?php// echo $Err; ?> </span>
+                                <span class="error text-white text-center mt-4">  </span>
                             </div>
                     </form>
                          

@@ -10,7 +10,7 @@ if ($conn->connect_error) {
 session_start();
 
 if(!isset($_SESSION['email'])){
-    header("Location:register_login.php");
+    header("Location:Admin_index.php");
 }
 
 $sql = "SELECT * FROM users WHERE id=".$_GET['id'];
@@ -20,7 +20,7 @@ $result = $conn->query($sql);
 if ($result->num_rows > 0) {
     // output data of each row
     while($row = $result->fetch_assoc()) {
- 
+
         $name = $row['name'];
         $age = $row['age'];
         $phone = $row['phone'];
